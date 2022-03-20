@@ -1,0 +1,4 @@
+|ID        |NAME      |WINS      |DRAWS     |LOSES     |
+|1         |Sergey    |2         |1         |0         |
+|2         |Shok      |0         |1         |1         |
+|3         |PPP       |0         |0         |1         |
