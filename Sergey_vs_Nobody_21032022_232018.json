@@ -1,0 +1,49 @@
+{
+  "players" : [ {
+    "id" : 1,
+    "name" : "Sergey",
+    "mark" : "CROSS",
+    "wins" : 1,
+    "draws" : 1,
+    "loses" : 1
+  }, {
+    "id" : 2,
+    "name" : "Nobody",
+    "mark" : "ZERO",
+    "wins" : 1,
+    "draws" : 1,
+    "loses" : 1
+  }, {
+    "id" : 2,
+    "name" : "Nobody",
+    "mark" : "ZERO",
+    "wins" : 1,
+    "draws" : 1,
+    "loses" : 1
+  } ],
+  "steps" : [ {
+    "mark" : "CROSS",
+    "x" : 0,
+    "y" : 0
+  }, {
+    "mark" : "ZERO",
+    "x" : 0,
+    "y" : 1
+  }, {
+    "mark" : "CROSS",
+    "x" : 0,
+    "y" : 2
+  }, {
+    "mark" : "ZERO",
+    "x" : 1,
+    "y" : 1
+  }, {
+    "mark" : "CROSS",
+    "x" : 1,
+    "y" : 0
+  }, {
+    "mark" : "ZERO",
+    "x" : 2,
+    "y" : 1
+  } ]
+}
