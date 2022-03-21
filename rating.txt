@@ -1,3 +1,3 @@
 |ID        |NAME      |WINS      |DRAWS     |LOSES     |
-|1         |DDD       |1         |0         |0         |
-|2         |RRR       |0         |0         |1         |
+|1         |S         |1         |0         |0         |
+|2         |F         |0         |0         |1         |

@@ -56,7 +56,7 @@ public class Utils {
 
     public static String selectMode(){
         String fileType = null;
-        String choise = null;
+        String choise = "";
         while (!(choise.equals("1") || choise.equals("2"))){
             Utils.printMessage("If you want to use XML-mode enter \'1\'");
             Utils.printMessage("If you want to use JSON-mode enter \'2\'");
@@ -68,18 +68,6 @@ public class Utils {
         }
         return fileType;
     }
-
-   public static void showReplay(String mode) {
-       switch (mode) {
-           case ".xml" -> {
-               new XMLParser().play();
-           }
-           case ".json" -> {
-               new JSonParser().play();
-           }
-       }
-    }
-
 
       public static ArrayList<String> makeOutputData(ArrayList<Player> players){
           ArrayList<String> result = new ArrayList<>();

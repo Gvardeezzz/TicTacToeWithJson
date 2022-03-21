@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Game {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         View view = new View();
         GamePlay gamePlay = new GamePlay(view);
         String mode = Utils.selectMode();
@@ -19,7 +19,11 @@ public class Game {
         }
 
         switch (choise){
-            case "1" -> Utils.showReplay(mode);
+           // case "1" -> gamePlay.showReplay(mode);
+            case "1" -> {
+                XMLParser xmlParser = new XMLParser();
+                xmlParser.play();
+            }
             case "2" -> gamePlay.mainLoop();
         }
     }
@@ -41,4 +45,5 @@ public class Game {
     }
 
 */
+
 }

@@ -4,27 +4,32 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
-import java.io.FileInputStream;
+import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class XMLParser implements GameParser{
     private View view;
-    private PlayerMark [][] gameField = new PlayerMark[3][3];
-    private Player []players = new Player[3];
-    private ArrayList<Step> steps = new ArrayList<>();
+    private PlayerMark [][] gameField;
+    private Player []players;
+    private ArrayList<Step> steps;
     private static String win = "Draw!";
     private String fileName;
 
     @Override
     public void parse(String filename) {
+        view = new View();
+        gameField = new PlayerMark[3][3];
+        players = new Player[3];
+        steps = new ArrayList<>();
+
         XMLInputFactory factory = XMLInputFactory.newInstance();
+        int playerCount = 0;
+        int stepCount =0;
         try{
             XMLEventReader reader = factory.createXMLEventReader(new FileInputStream(fileName));
             while (reader.hasNext()){
-                int playerCount = 0;
-                int stepCount =0;
                 XMLEvent event = reader.nextEvent();
-
                 if(event.isStartElement()){
                     StartElement startElement = event.asStartElement();
 
@@ -52,6 +57,7 @@ public class XMLParser implements GameParser{
                         step.setX(mas[0]);
                         step.setY(mas[1]);
                         steps.add(step);
+                        stepCount++;
                     }
                 }
             }
@@ -61,53 +67,61 @@ public class XMLParser implements GameParser{
 
     }
 
-    public void play(){
+    public void play() throws InterruptedException {
+        int playerNumber = 0;
+        System.out.println("Saved games:");
+        File file = new File("");
+        File path = new File(file.getAbsolutePath());
+        List<File> files = new ArrayList<>();
+        for(File f:path.listFiles()){
+            if(f.isFile() && f.getName().endsWith(".xml")) {
+                if(!f.getName().equals("pom.xml")) files.add(f);
+            }
+        }
+        for (int j = 0; j < files.size(); j++) {
+            System.out.printf("%d - %s", (j + 1), files.get(j).getName());
+            System.out.println();
+        }
+
+        int result = Utils.readInt();
+        while (result < 1 || result > files.size()+1) {
+            result = Utils.readInt();
+        }
+
+        fileName = files.get(result-1).getName();
+
+        parse(fileName);
+
+        initGameField();
+
         for (int i = 0; i < steps.size(); i++) {
-            System.out.println("Saved games:");
-            File file = new File("");
-            File path = new File(file.getAbsolutePath());
-            List<File> files = new ArrayList<>();
-            for(File f:path.listFiles()){
-                if(f.isFile() && f.getName().endsWith(".xml")) {
-                    if(!f.getName().equals("pom.xml")) files.add(f);
-                }
+            for (int j = 0; j < steps.size(); j++) {
+                int x = steps.get(j).getX();
+                int y = steps.get(j).getY();
+                PlayerMark mark = playerNumber % 2 == 0 ? PlayerMark.CROSS : PlayerMark.ZERO;
+                gameField[x][y] = mark;
+                view.refresh(gameField);
+                Thread.sleep(1000);
+                playerNumber++;
             }
-
-            for (int i = 0; i < files.size(); i++) {
-                System.out.printf("%d - %s", (i+1), files.get(i).getName());
-                System.out.println();
-            }
-            String result = null;
-            System.out.println("Enter number of game:");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            try {
-                result = reader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            fileName = files.get(Integer.parseInt(result)-1).getName();
-
-            parse(fileName);
-
-            int stepCount = 1;
-            for (int i = 0; i < steps.size(); i++) {
-                if(stepCount%2 == 1){
-                    gameField[steps.get(i).getX()][steps.get(i).getY()] = "X";
-                }
-                else  gameField[steps.get(i).getX()][steps.get(i).getY()] = "0";
-                print(gameField);
-                System.out.println();
-                stepCount++;
-            }
-            if(players.size() == 3){
-                Player winner = players.get(2);
-                System.out.printf("Player %d -> %s is winner as \'%s\'!", winner.getId(),winner.getName(),winner.getSymbol());
+            if(players[2] != null){
+                Player winner = players[2];
+                String symbol = winner.getMark() == PlayerMark.CROSS ? "X" : "0";
+                System.out.printf("Player %d -> %s is winner as \'%s\'!", winner.getId(), winner.getName(),symbol);
+                break;
             }
             else System.out.println(win);
-            view.refresh(gameField);
+        }
+
+        Utils.printMessage("");
+        Utils.printMessage("Do you want continue watching?");
+        Utils.printMessage("If no, enter word \"exit\". For continue watching enter any symbol");
+        String wantToWatch = Utils.readMessage();
+        if(!wantToWatch.equalsIgnoreCase("exit")) {
+            play();
         }
     }
+
     public void initGameField(){
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -139,4 +153,5 @@ public class XMLParser implements GameParser{
         }
         return coordinates;
     }
+
 }

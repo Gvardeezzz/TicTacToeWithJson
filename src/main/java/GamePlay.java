@@ -17,6 +17,19 @@ public class GamePlay {
         this.view = view;
     }
 
+    public static void showReplay(String mode) throws InterruptedException {
+        switch (mode) {
+            case ".xml" -> {
+                XMLParser xmlParser = new XMLParser();
+                xmlParser.play();
+            }
+            case ".json" -> {
+                JSonParser jSonParser = new JSonParser();
+                jSonParser.play();
+            }
+        }
+    }
+
     public void mainLoop(){
         clear();
         initGameField();
