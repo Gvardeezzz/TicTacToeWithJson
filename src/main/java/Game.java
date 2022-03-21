@@ -1,11 +1,8 @@
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.ArrayList;
+import java.io.IOException;
 
 public class Game {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
         View view = new View();
         GamePlay gamePlay = new GamePlay(view);
         String mode = Utils.selectMode();
@@ -19,31 +16,15 @@ public class Game {
         }
 
         switch (choise){
-           // case "1" -> gamePlay.showReplay(mode);
-            case "1" -> {
-                XMLParser xmlParser = new XMLParser();
-                xmlParser.play();
-            }
+            case "1" -> showReplay(mode);
             case "2" -> gamePlay.mainLoop();
         }
     }
-/*
 
-        ObjectMapper o = new ObjectMapper();
-        SomeData someData = new SomeData();
-        someData.setParam1(100);
-        someData.setParam2(false);
-        someData.setParam3("Zalupa");
-
-        String result = o.writeValueAsString(someData);
-        System.out.println(result);
-
+    public static void showReplay(String mode) throws InterruptedException, IOException {
+        switch (mode) {
+            case ".xml" -> new XMLParser().play();
+            case ".json" -> new JSonParser().play();
+        }
     }
-
-    public void sendSatisticsToFile(String fileName){
-
-    }
-
-*/
-
 }

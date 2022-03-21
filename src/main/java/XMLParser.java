@@ -83,12 +83,9 @@ public class XMLParser implements GameParser{
             System.out.println();
         }
 
-        int result = Utils.readInt();
-        while (result < 1 || result > files.size()+1) {
-            result = Utils.readInt();
-        }
+        int result = Utils.fileNumberRequest(files);
 
-        fileName = files.get(result-1).getName();
+        fileName = files.get(result).getName();
 
         parse(fileName);
 
@@ -111,6 +108,7 @@ public class XMLParser implements GameParser{
                 break;
             }
             else System.out.println(win);
+            break;
         }
 
         Utils.printMessage("");

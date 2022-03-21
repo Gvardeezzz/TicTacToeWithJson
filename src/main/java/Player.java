@@ -9,6 +9,14 @@ public class Player {
     private int draws;
     private int loses;
 
+    public Player(){
+        this.id = id;
+        this.name = name;
+        this.mark = mark;
+        this.wins = wins;
+        this.draws = draws;
+        this.loses = loses;
+    }
     public Player(int id, String name) {
         this.id = id;
         this.name = name;

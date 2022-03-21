@@ -3,6 +3,12 @@ public class Step {
     private int x;
     private int y;
 
+    public Step() {
+        this.mark = mark;
+        this.x = x;
+        this.y = y;
+    }
+
     public PlayerMark getMark() {
         return mark;
     }

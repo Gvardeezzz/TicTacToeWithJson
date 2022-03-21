@@ -1,9 +1,6 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
+import java.util.*;
 
 public class Utils {
     private String mode;
@@ -110,5 +107,14 @@ public class Utils {
           result.add(sb.toString());
       }
         return result;
+    }
+
+    public static int fileNumberRequest(List<File> files){
+        int number = 0;
+        while (number < 1 || number > files.size()){
+            Utils.printMessage("Enter a number of file");
+            number = Utils.readInt();
+        }
+        return number - 1;
     }
 }

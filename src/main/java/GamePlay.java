@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GamePlay {
@@ -17,7 +18,7 @@ public class GamePlay {
         this.view = view;
     }
 
-    public static void showReplay(String mode) throws InterruptedException {
+   /* public static void showReplay(String mode) throws InterruptedException, IOException {
         switch (mode) {
             case ".xml" -> {
                 XMLParser xmlParser = new XMLParser();
@@ -28,9 +29,9 @@ public class GamePlay {
                 jSonParser.play();
             }
         }
-    }
+    }*/
 
-    public void mainLoop(){
+    public void mainLoop() throws IOException {
         clear();
         initGameField();
         initPlayers();
@@ -73,15 +74,8 @@ public class GamePlay {
         Utils.sendStatisticsToFile(rating);
 
         switch (mode){
-            case ".xml" -> {
-                XMLWriter xmlWriter = new XMLWriter(this);
-                xmlWriter.writeToFile();
-            }
-
-            case ".json" -> {
-                JsonWriter jsonWriter = new JsonWriter(this);
-                jsonWriter.writeToFile();
-            }
+            case ".xml" -> new XMLWriter(this).writeToFile();
+            case ".json" -> new JsonWriter(this).writeToFile();
         }
 
 
@@ -179,16 +173,8 @@ public class GamePlay {
         return players;
     }
 
-    public void setPlayers(Player[] players) {
-        this.players = players;
-    }
-
     public ArrayList<Step> getSteps() {
         return steps;
-    }
-
-    public void setSteps(ArrayList<Step> steps) {
-        this.steps = steps;
     }
 
     public Player createPlayer(int id, String name){

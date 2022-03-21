@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 public interface GameParser {
-   void parse(String filename);
+   void parse(String filename) throws IOException;
 }
