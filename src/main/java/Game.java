@@ -8,8 +8,8 @@ public class Game {
     public static void main(String[] args) {
         View view = new View();
         GamePlay gamePlay = new GamePlay(view);
-       // XMLWriter xmlWriter = new XMLWriter(gamePlay);
-        // JsonWriter jsonWriter = new JsonWriter(gamePlay);
+        String mode = Utils.selectMode();
+        gamePlay.setMode(mode);
 
         String choise = "";
         while (!(choise.equals("1") || choise.equals("2"))){
@@ -19,10 +19,8 @@ public class Game {
         }
 
         switch (choise){
-           // case "1" -> Utils.showReplay();
-            case "2" -> {
-                gamePlay.mainLoop();
-            }
+            case "1" -> Utils.showReplay(mode);
+            case "2" -> gamePlay.mainLoop();
         }
     }
 /*

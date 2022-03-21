@@ -8,6 +8,6 @@ public class JsonWriter implements GameWriter{
     }
 
     @Override
-    public void writeToFile(String fileName) {
+    public void writeToFile() {
     }
 }

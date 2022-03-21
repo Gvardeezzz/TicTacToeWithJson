@@ -1,3 +1,3 @@
 public interface GameParser {
-    void parse();
+    void parse(String filename);
 }

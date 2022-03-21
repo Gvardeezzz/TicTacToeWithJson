@@ -7,6 +7,11 @@ public class GamePlay {
     private View view;
     private Player[] players;
     private ArrayList<Step> steps;
+    private String mode;
+
+    public void setMode(String mode) {
+        this.mode = mode;
+    }
 
     public GamePlay(View view) {
         this.view = view;
@@ -30,6 +35,7 @@ public class GamePlay {
 
             if (isWin(gameField, currentPlayer.getMark())) {
                 Utils.printMessage(String.format("Winner is %s!", currentPlayer.getName()));
+                players[2] = currentPlayer;
                 int winnerIndex = findIndex(currentPlayer.getId(), playerList);
                 int loserIndex = findIndex(changePlayer(currentPlayer).getId(), playerList);
                 playerList.get(winnerIndex).setWins(currentPlayer.getWins() + 1);
@@ -52,6 +58,19 @@ public class GamePlay {
 
         rating = Utils.makeOutputData(playerList);
         Utils.sendStatisticsToFile(rating);
+
+        switch (mode){
+            case ".xml" -> {
+                XMLWriter xmlWriter = new XMLWriter(this);
+                xmlWriter.writeToFile();
+            }
+
+            case ".json" -> {
+                JsonWriter jsonWriter = new JsonWriter(this);
+                jsonWriter.writeToFile();
+            }
+        }
+
 
         Utils.printMessage("Do you want to play again?");
         Utils.printMessage("If no, enter word \"exit\". For continue playing enter any symbol");

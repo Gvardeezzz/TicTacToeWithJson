@@ -6,6 +6,8 @@ import java.util.Comparator;
 import java.util.Map;
 
 public class Utils {
+    private String mode;
+
     public static void printMessage(String string) {
         System.out.println(string);
     }
@@ -52,12 +54,12 @@ public class Utils {
         }
     }
 
-    public String selectSaveFileType(){
+    public static String selectMode(){
         String fileType = null;
         String choise = null;
         while (!(choise.equals("1") || choise.equals("2"))){
-            Utils.printMessage("If you want to save games as XML enter \'1\'");
-            Utils.printMessage("If you want to save games as JSON enter \'2\'");
+            Utils.printMessage("If you want to use XML-mode enter \'1\'");
+            Utils.printMessage("If you want to use JSON-mode enter \'2\'");
             choise = Utils.readMessage();
         }
         switch (choise){
@@ -67,11 +69,18 @@ public class Utils {
         return fileType;
     }
 
-  /*  public static void showReplay(String fileType) {
-        switch (fileType) {
-            case ".xml" -> new JsonWriter()
-        }
-    } */
+   public static void showReplay(String mode) {
+       switch (mode) {
+           case ".xml" -> {
+               new XMLParser().play();
+           }
+           case ".json" -> {
+               new JSonParser().play();
+           }
+       }
+    }
+
+
       public static ArrayList<String> makeOutputData(ArrayList<Player> players){
           ArrayList<String> result = new ArrayList<>();
           Comparator<Player> plr = Comparator.comparing(Player::getWins, Comparator.reverseOrder()).thenComparing(Player::getDraws, Comparator.reverseOrder()).thenComparing(Player::getLoses).
