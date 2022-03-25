@@ -6,19 +6,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JSonParser implements GameParser {
+    private Gameplay gameplay;
+    private Player[] players = new Player[2];
+    private Player winner;
     private final View view = new View();
     private PlayerMark[][] gameField = new PlayerMark[3][3];
-    private Player[] players = new Player[3];
-    private ArrayList<Step> steps = new ArrayList<>();
-    private final static String win = "Draw!";
+
     private String fileName;
     ObjectMapper objectMapper = new ObjectMapper();
-    DataForSaving data;
 
     @Override
     public void parse(String filename) throws IOException {
         File instance = new File(fileName);
-        data = objectMapper.readValue(instance, DataForSaving.class);
+       // objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        gameplay = objectMapper.readValue(instance, Gameplay.class);
+
     }
 
     public void play() throws IOException, InterruptedException {
@@ -42,23 +44,19 @@ public class JSonParser implements GameParser {
 
         parse(fileName);
 
-        players = data.getPlayers();
-        steps = data.getSteps();
-
         initGameField();
-
+        var steps = gameplay.getGame().getSteps();
         for (int i = 0; i < steps.size(); i++) {
             Step step = steps.get(i);
             gameField[step.getX()][step.getY()] = step.getMark();
             view.refresh(gameField);
             Thread.sleep(1000);
+            winner = gameplay.getGameResult().getWinner();
         }
-
-        if (players[2] != null) {
-            Player winner = players[2];
+        if (winner != null) {
             String symbol = winner.getMark() == PlayerMark.CROSS ? "X" : "0";
             System.out.printf("Player %d -> %s is winner as '%s'!", winner.getId(), winner.getName(), symbol);
-        } else System.out.println(win);
+        } else Utils.printMessage("Draw!");
 
         Utils.printMessage("");
         Utils.printMessage("Do you want continue watching?");

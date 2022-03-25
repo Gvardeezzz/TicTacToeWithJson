@@ -1,12 +1,13 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class GamePlay {
+public class Model {
     private PlayerMark [][] gameField = new PlayerMark[3][3];
     private ArrayList<Player> playerList = new ArrayList<>();
     private ArrayList<String> rating = new ArrayList<>();
     private View view;
     private Player[] players;
+    private Player winner;
     private ArrayList<Step> steps;
     private String mode;
 
@@ -14,22 +15,9 @@ public class GamePlay {
         this.mode = mode;
     }
 
-    public GamePlay(View view) {
+    public Model(View view) {
         this.view = view;
     }
-
-   /* public static void showReplay(String mode) throws InterruptedException, IOException {
-        switch (mode) {
-            case ".xml" -> {
-                XMLParser xmlParser = new XMLParser();
-                xmlParser.play();
-            }
-            case ".json" -> {
-                JSonParser jSonParser = new JSonParser();
-                jSonParser.play();
-            }
-        }
-    }*/
 
     public void mainLoop() throws IOException {
         clear();
@@ -39,17 +27,15 @@ public class GamePlay {
         players[0].setMark(PlayerMark.CROSS);
         players[1].setMark(PlayerMark.ZERO);
         boolean isWinnerFound = false;
-        int stepNumber = 1;
 
         while (hasMotion(gameField)) {
             Utils.printMessage(String.format("%s moves", currentPlayer.getName()));
             steps.add(Step.makeStep(gameField, currentPlayer.getMark()));
-            stepNumber++;
             view.refresh(gameField);
 
             if (isWin(gameField, currentPlayer.getMark())) {
                 Utils.printMessage(String.format("Winner is %s!", currentPlayer.getName()));
-                players[2] = currentPlayer;
+                winner = currentPlayer;
                 int winnerIndex = findIndex(currentPlayer.getId(), playerList);
                 int loserIndex = findIndex(changePlayer(currentPlayer).getId(), playerList);
                 playerList.get(winnerIndex).setWins(currentPlayer.getWins() + 1);
@@ -88,7 +74,8 @@ public class GamePlay {
     }
 
     public void clear(){
-        players = new Player[3];
+        players = new Player[2];
+        winner = null;
         steps = new ArrayList<>();
     }
 
@@ -160,6 +147,14 @@ public class GamePlay {
             if (gameField[0][2] == mark && gameField[1][1] == mark && gameField[2][0] == mark) return true;
         }
         return false;
+    }
+
+    public Player getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
     }
 
     public int findIndex(int id, ArrayList<Player> playerList){

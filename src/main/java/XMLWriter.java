@@ -15,10 +15,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class XMLWriter implements GameWriter {
-    private final GamePlay gamePlay;
+    private final Model model;
     private static Document document;
-    public XMLWriter(GamePlay gamePlay) {
-        this.gamePlay = gamePlay;
+    public XMLWriter(Model model) {
+        this.model = model;
     }
     String fileName = null;
 
@@ -29,16 +29,16 @@ public class XMLWriter implements GameWriter {
         Element gameplay = document.createElement("Gameplay");
         document.appendChild(gameplay);
 
-        Player player1 = gamePlay.getPlayers()[0];
-        Player player2 = gamePlay.getPlayers()[1];
-        Player winner = gamePlay.getPlayers()[2];
+        Player player1 = model.getPlayers()[0];
+        Player player2 = model.getPlayers()[1];
+        Player winner = model.getWinner();
 
         gameplay.appendChild(addPlayer(player1));
         gameplay.appendChild(addPlayer(player2));
         Element game = document.createElement("Game");
         gameplay.appendChild(game);
 
-        ArrayList<Step> steps = gamePlay.getSteps();
+        ArrayList<Step> steps = model.getSteps();
         for (int i = 0; i < steps.size(); i++) {
             Element step = document.createElement("Step");
             step.setAttribute("num", String.valueOf(i+1));

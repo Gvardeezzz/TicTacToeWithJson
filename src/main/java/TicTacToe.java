@@ -1,12 +1,12 @@
 import java.io.IOException;
 
-public class Game {
+public class TicTacToe {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         View view = new View();
-        GamePlay gamePlay = new GamePlay(view);
+        Model model = new Model(view);
         String mode = Utils.selectMode();
-        gamePlay.setMode(mode);
+        model.setMode(mode);
 
         String choise = "";
         while (!(choise.equals("1") || choise.equals("2"))){
@@ -17,7 +17,7 @@ public class Game {
 
         switch (choise){
             case "1" -> showReplay(mode);
-            case "2" -> gamePlay.mainLoop();
+            case "2" -> model.mainLoop();
         }
     }
 

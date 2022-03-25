@@ -12,6 +12,7 @@ public class XMLParser implements GameParser{
     private View view;
     private PlayerMark [][] gameField;
     private Player []players;
+    private Player winner;
     private ArrayList<Step> steps;
     private static String win = "Draw!";
     private String fileName;
@@ -20,8 +21,9 @@ public class XMLParser implements GameParser{
     public void parse(String filename) {
         view = new View();
         gameField = new PlayerMark[3][3];
-        players = new Player[3];
+        players = new Player[2];
         steps = new ArrayList<>();
+        winner = null;
 
         XMLInputFactory factory = XMLInputFactory.newInstance();
         int playerCount = 0;
@@ -46,8 +48,9 @@ public class XMLParser implements GameParser{
 
                         Player player = new Player(Integer.parseInt(id),name);
                         player.setMark(mark);
-                        players[playerCount] = player;
-                        playerCount++;
+                        if (playerCount == 2) winner = player;
+                       else { players[playerCount] = player;
+                        playerCount++;}
                     }
                     else if(startElement.getName().getLocalPart().equals("Step")){
                         event = reader.nextEvent();
@@ -56,6 +59,7 @@ public class XMLParser implements GameParser{
                         Step step = new Step(players[stepCount%2].getMark(), 0, 0);
                         step.setX(mas[0]);
                         step.setY(mas[1]);
+                        step.setNum(stepCount);
                         steps.add(step);
                         stepCount++;
                     }
@@ -101,13 +105,12 @@ public class XMLParser implements GameParser{
                 Thread.sleep(1000);
                 playerNumber++;
             }
-            if(players[2] != null){
-                Player winner = players[2];
+            if(winner != null){
                 String symbol = winner.getMark() == PlayerMark.CROSS ? "X" : "0";
                 System.out.printf("Player %d -> %s is winner as \'%s\'!", winner.getId(), winner.getName(),symbol);
                 break;
             }
-            else System.out.println(win);
+            else Utils.printMessage("Draw!");
             break;
         }
 

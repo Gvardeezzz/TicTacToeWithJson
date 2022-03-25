@@ -1,4 +1,14 @@
 public class Step {
+    private int num = 1;
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
     private PlayerMark mark;
     private int x;
     private int y;
